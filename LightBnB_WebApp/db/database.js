@@ -92,7 +92,6 @@ const addUser = function (user) {
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function (guest_id, limit = 10) {
-  // return getAllProperties(null, 2);
 
   return pool
   .query(`SELECT * FROM reservations LIMIT $1`, [limit])
@@ -115,15 +114,59 @@ const getAllReservations = function (guest_id, limit = 10) {
  */
 const getAllProperties = function (options, limit = 10) {
 
-  return pool
-    .query(`SELECT * FROM properties LIMIT $1`, [limit])
-    .then((result) => {
-      console.log(result.rows);
-      return result.rows;
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });  
+    // Setup an array to hold any parameters that may be available for the query
+    const queryParams = [];
+    
+    // Start the query with all information that comes before the WHERE clause
+    let queryString = `
+    SELECT properties.*, avg(property_reviews.rating) as average_rating
+    FROM properties
+    JOIN property_reviews ON properties.id = property_id
+    `;
+    
+    // Check if an owner id has been passed in
+    if (options.owner_id) {
+      queryParams.push(options.owner_id);
+      queryString += `WHERE owner_id = $${queryParams.length}`;
+    }
+
+    // Check if a city has been passed in
+    if (options.city) {
+      queryParams.push(`%${options.city}%`);
+      queryString += `${queryParams.length > 0 ? 'AND' : 'WHERE'} city LIKE $${queryParams.length} `;
+    }
+
+    // Check if a minimum_price_per_night has been passed in
+    if (options.minimum_price_per_night) {
+      queryParams.push(options.minimum_price_per_night * 100); // convert to cents
+      queryString += `${queryParams.length > 0 ? 'AND' : 'WHERE'} cost_per_night >= $${queryParams.length} `;
+    }
+  
+    // Check if a maximum_price_per_night has been passed in
+    if (options.maximum_price_per_night) {
+      queryParams.push(options.maximum_price_per_night * 100); // convert to cents
+      queryString += `${queryParams.length > 0 ? 'AND' : 'WHERE'} cost_per_night <= $${queryParams.length} `;
+    }
+  
+    // Check if a minimum_rating has been passed in
+    if (options.minimum_rating) {
+      queryParams.push(options.minimum_rating);
+      queryString += `${queryParams.length > 0 ? 'AND' : 'WHERE'} property_reviews.rating >= $${queryParams.length} `;
+    }
+
+    // Add any query that comes after the WHERE clause
+    queryParams.push(limit);
+    queryString += `
+    GROUP BY properties.id
+    ORDER BY cost_per_night
+    LIMIT $${queryParams.length};
+    `;
+
+    // Console log everything
+    console.log(queryString, queryParams);
+
+    // Run the query
+    return pool.query(queryString, queryParams).then((res) => res.rows);
 };
 
 /**
@@ -132,10 +175,12 @@ const getAllProperties = function (options, limit = 10) {
  * @return {Promise<{}>} A promise to the property.
  */
 const addProperty = function (property) {
-  const propertyId = Object.keys(properties).length + 1;
-  property.id = propertyId;
-  properties[propertyId] = property;
-  return Promise.resolve(property);
+  // const propertyId = Object.keys(properties).length + 1;
+  // property.id = propertyId;
+  // properties[propertyId] = property;
+  // return Promise.resolve(property);
+
+
 };
 
 module.exports = {
