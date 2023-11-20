@@ -1,4 +1,4 @@
-![header](./images/header.png = 1280x640)
+![header](./images/header.png)
 
 # LightBnB
 
