@@ -4,13 +4,11 @@
 
 A simple multi-paged AirBnB clone that uses server-side code to display information from user input to web pages using SQL and Javascript.
 
----
 
 ## Preview
 
 ![Homepage preview](./images/homepage.png)
 
----
 
 ## Project Structure
 
@@ -66,7 +64,7 @@ A simple multi-paged AirBnB clone that uses server-side code to display informat
 * `styles` contains all of the sass files. 
 * `server.js` is the entry point to the application. This connects the routes to the database.
 
----
+
 ## Dependencies
 
 - Node 5.10.x or above
