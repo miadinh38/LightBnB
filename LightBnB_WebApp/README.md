@@ -1,4 +1,4 @@
-![Homepage preview](./images/header.png)
+![header](./images/header.png = 1280x640)
 
 # LightBnB
 
