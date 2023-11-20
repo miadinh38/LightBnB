@@ -1,4 +1,4 @@
-![Homepage preview](/images/header.png)
+![Homepage preview](./images/header.png)
 
 # LightBnB
 
@@ -8,7 +8,7 @@ A simple multi-paged AirBnB clone that uses server-side code to display informat
 
 ## Preview
 
-![Homepage preview](/images/homepage.png)
+![Homepage preview](./images/homepage.png)
 
 ---
 
