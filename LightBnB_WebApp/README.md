@@ -1,4 +1,16 @@
+![Homepage preview](/images/header.png)
+
 # LightBnB
+
+A simple multi-paged AirBnB clone that uses server-side code to display information from user input to web pages using SQL and Javascript.
+
+---
+
+## Preview
+
+![Homepage preview](/images/homepage.png)
+
+---
 
 ## Project Structure
 
@@ -53,3 +65,13 @@
 * `routes` contains the router files which are responsible for any HTTP requests to `/users/something` or `/api/something`. 
 * `styles` contains all of the sass files. 
 * `server.js` is the entry point to the application. This connects the routes to the database.
+
+---
+## Dependencies
+
+- Node 5.10.x or above
+- Express
+- node-pg
+- bcrypt
+- cookie-session
+
